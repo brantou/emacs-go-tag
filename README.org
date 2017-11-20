@@ -30,9 +30,9 @@
   :END:
 
   support the following transformations:
-  - ~snakecase~: "BaseDomain" -> "base_domain"
-  - ~camelcase~: "BaseDomain" -> "baseDomain"
-  - ~lispcase~: "BaseDomain" -> "base-domain"
+  - ~snakecase~: ~"BaseDomain"~ -> ~"base_domain"~
+  - ~camelcase~: ~"BaseDomain"~ -> ~"baseDomain"~
+  - ~lispcase~: ~"BaseDomain"~ -> ~"base-domain"~
 
   #+BEGIN_SRC elisp :eval strip-export
     (setq go-tag-args (append go-tag-args (list "-transform" "camelcase")))
