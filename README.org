@@ -1,0 +1,34 @@
+* emacs-gomodifytags
+  :PROPERTIES:
+  :ID:       433a1d5f-9353-496f-a783-8c123cc0a633
+  :END:
+  Add field tags for golang struct fields, based on [[https://github.com/fatih/gomodifytags][gomodifytags]].
+
+* gomodifytags
+  :PROPERTIES:
+  :ID:       f51e9e98-85ed-428a-90ba-d0727a257402
+  :END:
+  Go tool to modify/update field tags in structs.
+  ~gomodifytags~ makes it easy to update, add or delete the tags in a struct field.
+  It can be installed with
+  #+BEGIN_SRC shell :eval strip-export
+    go get github.com/fatih/gomodifytags
+  #+END_SRC
+
+* Commands
+  :PROPERTIES:
+  :ID:       dbee016c-6edd-4999-9303-419d35469ad2
+  :END:
+  - ~gomodifytags~ Add tags
+  - ~gomodifytags-remove~ Remove tags
+
+* Configuration
+  :PROPERTIES:
+  :ID:       9f364afb-69ae-47dc-ae2e-d76bdcefc928
+  :END:
+
+  #+BEGIN_SRC elisp :eval strip-export
+    (with-eval-after-load 'go-mode
+      (define-key go-mode-map (kbd "C-c t") #'gomodifytags)
+      (define-key go-mode-map (kbd "C-c T") #'gomodifytags-remove))
+  #+END_SRC
