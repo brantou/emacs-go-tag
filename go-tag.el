@@ -1,9 +1,9 @@
-;;; gomodifytags.el --- Modify tags for struct fields -*- lexical-binding: t; -*-
+;;; go-tag.el --- Modify tags for struct fields -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017 Brantou
 
 ;; Author: Brantou <brantou89@gmail.com>
-;; URL: https://github.com/brantou/emacs-gomodifytags
+;; URL: https://github.com/brantou/emacs-go-tag
 ;; Keywords: tools
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "24.0"))
@@ -43,23 +43,23 @@
 
 (require 'go-mode)
 
-(defgroup gomodifytags nil
+(defgroup go-tag nil
   "Modify field tag for struct fields."
   :group 'go)
 
-(defcustom gomodifytags-command "gomodifytags"
+(defcustom go-tag-command "gomodifytags"
   "The 'gomodifytags' command.
 from https://github.com/fatih/gomodifytags."
   :type 'string
   :group 'go)
 
-(defcustom gomodifytags-args nil
-  "Additional arguments to pass to gomodifytags."
+(defcustom go-tag-args nil
+  "Additional arguments to pass to go-tag."
   :type '(repeat string)
   :group 'go)
 
-(defcustom gomodifytags-show-errors 'buffer
-  "Where to display gomodifytags error output.
+(defcustom go-tag-show-errors 'buffer
+  "Where to display go-tag error output.
 It can either be displayed in its own buffer, in the echo area, or not at all."
   :type '(choice
           (const :tag "Own buffer" buffer)
@@ -68,27 +68,35 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
   :group 'go)
 
 ;;;###autoload
-(defun gomodifytags (tags)
+(defun go-tag-add (tags)
   "Add field TAGS for struct fields."
   (interactive "sTags:")
   (if (use-region-p)
-      (gomodifytags--region (region-beginning) (region-end) tags nil)
-    (gomodifytags--point (point) tags nil)))
+      (go-tag--region (region-beginning) (region-end) tags nil)
+    (go-tag--point (point) tags nil)))
 
-(defun gomodifytags--region (start end tags &optional options)
+;;;###autoload
+(defun go-tag-add-opt (options)
+  "Add field tag's OPTIONS for struct fields."
+  (interactive "sOptions:")
+  (if (use-region-p)
+      (go-tag--region (region-beginning) (region-end) nil options)
+    (go-tag--point (point) nil options)))
+
+(defun go-tag--region (start end tags &optional options)
   "Add field TAGS for the region between START and END."
   (let ((cmd-args (append
-                   gomodifytags-args
+                   go-tag-args
                    (list "-line" (format "%S,%S" (line-number-at-pos start) (line-number-at-pos end))))))
-    (gomodifytags--add cmd-args tags options)))
+    (go-tag--add cmd-args tags options)))
 
-(defun gomodifytags--point (point tags &optional options)
+(defun go-tag--point (point tags &optional options)
   "Add field TAGS for the struct under the POINT."
-  (let ((cmd-args (append gomodifytags-args
+  (let ((cmd-args (append go-tag-args
                           (list "-offset" (format "%S" point)))))
-    (gomodifytags--add cmd-args tags options)))
+    (go-tag--add cmd-args tags options)))
 
-(defun gomodifytags--add (cmd-args tags &optional options)
+(defun go-tag--add (cmd-args tags &optional options)
   "Init CMD-ARGS, add TAGS and OPTIONS to CMD-ARGS."
   (progn
     (when tags
@@ -99,31 +107,39 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
       (setq cmd-args
             (append cmd-args
                     (list "-add-options" options))))
-    (gomodifytags--proc cmd-args)))
+    (go-tag--proc cmd-args)))
 
 ;;;###autoload
-(defun gomodifytags-remove (tags)
+(defun go-tag-remove (tags)
   "Remove field TAGS for struct fields."
   (interactive "sTags:")
   (if (use-region-p)
-      (gomodifytags--region-remove (region-beginning) (region-end) tags nil)
-    (gomodifytags--point-remove (point) tags nil)))
+      (go-tag--region-remove (region-beginning) (region-end) tags nil)
+    (go-tag--point-remove (point) tags nil)))
 
-(defun gomodifytags--region-remove (start end tags &optional options)
+;;;###autoload
+(defun go-tag-remove-opt (options)
+  "Remove field tag's OPTIONS for struct fields."
+  (interactive "sOptions:")
+  (if (use-region-p)
+      (go-tag--region-remove (region-beginning) (region-end) nil options)
+    (go-tag--point-remove (point) nil options)))
+
+(defun go-tag--region-remove (start end tags &optional options)
   "Remove field TAGS for the region between START and END."
   (let ((cmd-args (append
-                   gomodifytags-args
+                   go-tag-args
                    (list "-line" (format "%S,%S" (line-number-at-pos start) (line-number-at-pos end))))))
-    (gomodifytags--remove cmd-args tags options)))
+    (go-tag--remove cmd-args tags options)))
 
-(defun gomodifytags--point-remove (point tags &optional options)
+(defun go-tag--point-remove (point tags &optional options)
   "Add field TAGS for the struct under the POINT."
   (let ((cmd-args (append
-                   gomodifytags-args
+                   go-tag-args
                    (list "-offset" (format "%S" point)))))
-    (gomodifytags--remove cmd-args tags options)))
+    (go-tag--remove cmd-args tags options)))
 
-(defun gomodifytags--remove(cmd-args tags &optional options)
+(defun go-tag--remove(cmd-args tags &optional options)
   "Init CMD-ARGS, add TAGS and OPTIONS to CMD-ARGS."
   (progn
     (when tags
@@ -134,17 +150,17 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
       (setq cmd-args
             (append cmd-args
                     (list "-remove-options" options))))
-    (gomodifytags--proc cmd-args)))
+    (go-tag--proc cmd-args)))
 
-(defun gomodifytags--proc (cmd-args)
+(defun go-tag--proc (cmd-args)
   "Modify field tags based on CMD-ARGS.
 
-  The tool used can be set via ‘gomodifytags-command` (default: gomodifytags)
- and additional arguments can be set as a list via ‘gomodifytags-args`."
-  (let ((tmpfile (make-temp-file "gomodifytags" nil ".go"))
-        (patchbuf (get-buffer-create "*Gomodifytags patch*"))
-        (errbuf (if gomodifytags-show-errors
-                    (get-buffer-create "*Gomodifytags Errors*")))
+  The tool used can be set via ‘go-tag-command` (default: go-tag)
+ and additional arguments can be set as a list via ‘go-tag-args`."
+  (let ((tmpfile (make-temp-file "go-tag" nil ".go"))
+        (patchbuf (get-buffer-create "*Go-Tag patch*"))
+        (errbuf (if go-tag-show-errors
+                    (get-buffer-create "*Go-Tag Errors*")))
         (coding-system-for-read 'utf-8)
         (coding-system-for-write 'utf-8))
 
@@ -162,30 +178,30 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
 
           (setq cmd-args (append cmd-args (list "-file" tmpfile "-w")))
 
-          (message "Calling gomodifytags: %s %s" gomodifytags-command cmd-args)
-          (if (zerop (apply #'call-process gomodifytags-command nil errbuf nil cmd-args))
+          (message "Calling go-tag: %s %s" go-tag-command cmd-args)
+          (if (zerop (apply #'call-process go-tag-command nil errbuf nil cmd-args))
               (progn
                 (if (zerop (call-process-region (point-min) (point-max) "diff" nil patchbuf nil "-n" "-" tmpfile))
-                    (message "Buffer is already gomodifytags")
+                    (message "Buffer is already go-tag")
                   (go--apply-rcs-patch patchbuf)
-                  (message "Applied gomodifytags"))
-                (if errbuf (gomodifytags--kill-error-buffer errbuf)))
-            (message "Could not apply gomodifytags")
+                  (message "Applied go-tag"))
+                (if errbuf (go-tag--kill-error-buffer errbuf)))
+            (message "Could not apply go-tag")
             (if errbuf
                 (progn
                   (message (with-current-buffer errbuf (buffer-string)))
-                  (gomodifytags--kill-error-buffer errbuf)))))
+                  (go-tag--kill-error-buffer errbuf)))))
 
       (kill-buffer patchbuf)
       (delete-file tmpfile))))
 
-(defun gomodifytags--kill-error-buffer (errbuf)
+(defun go-tag--kill-error-buffer (errbuf)
   "Kill ERRBUF."
   (let ((win (get-buffer-window errbuf)))
     (if win
         (quit-window t win)
       (kill-buffer errbuf))))
 
-(provide 'gomodifytags)
+(provide 'go-tag)
 
-;;; gomodifytags.el ends here
+;;; go-tag.el ends here

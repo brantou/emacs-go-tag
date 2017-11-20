@@ -1,4 +1,4 @@
-* emacs-gomodifytags
+* emacs-go-tag
   :PROPERTIES:
   :ID:       433a1d5f-9353-496f-a783-8c123cc0a633
   :END:
@@ -19,8 +19,10 @@
   :PROPERTIES:
   :ID:       dbee016c-6edd-4999-9303-419d35469ad2
   :END:
-  - ~gomodifytags~ Add tags
-  - ~gomodifytags-remove~ Remove tags
+  - ~go-tag-add~ Add tags
+  - ~go-tag-remove~ Remove tags
+  - ~go-tag-add-opt~ Add tag's options
+  - ~go-tag-remove-opt~ Remove tag's options
 
 * Configuration
   :PROPERTIES:
@@ -29,6 +31,8 @@
 
   #+BEGIN_SRC elisp :eval strip-export
     (with-eval-after-load 'go-mode
-      (define-key go-mode-map (kbd "C-c t") #'gomodifytags)
-      (define-key go-mode-map (kbd "C-c T") #'gomodifytags-remove))
+      (define-key go-mode-map (kbd "C-c t") #'go-tag-add)
+      (define-key go-mode-map (kbd "C-c T") #'go-tag-remove)
+      (define-key go-mode-map (kbd "C-c o") #'go-tag-add-opt)
+      (define-key go-mode-map (kbd "C-c O") #'go-tag-remove-opt))
   #+END_SRC
