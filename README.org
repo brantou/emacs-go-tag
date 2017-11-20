@@ -2,7 +2,7 @@
   :PROPERTIES:
   :ID:       433a1d5f-9353-496f-a783-8c123cc0a633
   :END:
-  Add field tags for golang struct fields, based on [[https://github.com/fatih/gomodifytags][gomodifytags]].
+  Edit field tags for golang struct fields, based on [[https://github.com/fatih/gomodifytags][gomodifytags]].
 
 * gomodifytags
   :PROPERTIES:
@@ -28,6 +28,15 @@
   :PROPERTIES:
   :ID:       9f364afb-69ae-47dc-ae2e-d76bdcefc928
   :END:
+
+  support the following transformations:
+  - ~snakecase~: "BaseDomain" -> "base_domain"
+  - ~camelcase~: "BaseDomain" -> "baseDomain"
+  - ~lispcase~: "BaseDomain" -> "base-domain"
+
+  #+BEGIN_SRC elisp :eval strip-export
+    (setq go-tag-args (append go-tag-args (list "-transform" "camelcase")))
+  #+END_SRC
 
   #+BEGIN_SRC elisp :eval strip-export
     (with-eval-after-load 'go-mode
