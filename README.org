@@ -35,7 +35,7 @@
   - ~lispcase~: ~BaseDomain~ -> ~base-domain~
 
   #+BEGIN_SRC elisp :eval strip-export
-    (setq go-tag-args (append go-tag-args (list "-transform" "camelcase")))
+    (setq go-tag-args (list "-transform" "camelcase"))
   #+END_SRC
 
   #+BEGIN_SRC elisp :eval strip-export
