@@ -21,8 +21,6 @@
   :END:
   - ~go-tag-add~ Add tags
   - ~go-tag-remove~ Remove tags
-  - ~go-tag-add-opt~ Add tag's options
-  - ~go-tag-remove-opt~ Remove tag's options
 
 * Configuration
   :PROPERTIES:
@@ -42,6 +40,4 @@
     (with-eval-after-load 'go-mode
       (define-key go-mode-map (kbd "C-c t") #'go-tag-add)
       (define-key go-mode-map (kbd "C-c T") #'go-tag-remove)
-      (define-key go-mode-map (kbd "C-c o") #'go-tag-add-opt)
-      (define-key go-mode-map (kbd "C-c O") #'go-tag-remove-opt))
   #+END_SRC

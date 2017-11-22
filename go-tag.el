@@ -67,21 +67,41 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
           (const :tag "None" nil))
   :group 'go)
 
+(defun go-tag--parse-tag (tags)
+  (mapconcat
+   'car
+   (mapcar
+    (lambda(str)
+      (split-string str ","))
+    (split-string tags))
+   ","))
+
+(defun go-tag--parse-option (tags)
+  (mapconcat 'identity
+             (delete
+              ""
+              (split-string
+               (mapconcat
+                (lambda(str-lst)
+                  (when (< 1 (length str-lst))
+                    (concat (car str-lst) "=" (cadr str-lst))))
+                (mapcar
+                 (lambda(str)
+                   (split-string str ","))
+                 (split-string tags))
+                ",")
+               ","))
+             ","))
+
 ;;;###autoload
 (defun go-tag-add (tags)
   "Add field TAGS for struct fields."
   (interactive "sTags:")
-  (if (use-region-p)
-      (go-tag--region (region-beginning) (region-end) tags nil)
-    (go-tag--point (point) tags nil)))
-
-;;;###autoload
-(defun go-tag-add-opt (options)
-  "Add field tag's OPTIONS for struct fields."
-  (interactive "sOptions:")
-  (if (use-region-p)
-      (go-tag--region (region-beginning) (region-end) nil options)
-    (go-tag--point (point) nil options)))
+  (let ((stags (go-tag--parse-tag tags))
+        (options (go-tag--parse-option tags)))
+    (if (use-region-p)
+        (go-tag--region (region-beginning) (region-end) stags options)
+      (go-tag--point (point)  stags options))))
 
 (defun go-tag--region (start end tags &optional options)
   "Add field TAGS for the region between START and END."
@@ -99,11 +119,11 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
 (defun go-tag--add (cmd-args tags &optional options)
   "Init CMD-ARGS, add TAGS and OPTIONS to CMD-ARGS."
   (progn
-    (when tags
+    (when (and tags (not (string-equal tags "")))
       (setq cmd-args
             (append cmd-args
                     (list "-add-tags" tags))))
-    (when options
+    (when (and options (not (string-equal options "")))
       (setq cmd-args
             (append cmd-args
                     (list "-add-options" options))))
@@ -113,17 +133,11 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
 (defun go-tag-remove (tags)
   "Remove field TAGS for struct fields."
   (interactive "sTags:")
-  (if (use-region-p)
-      (go-tag--region-remove (region-beginning) (region-end) tags nil)
-    (go-tag--point-remove (point) tags nil)))
-
-;;;###autoload
-(defun go-tag-remove-opt (options)
-  "Remove field tag's OPTIONS for struct fields."
-  (interactive "sOptions:")
-  (if (use-region-p)
-      (go-tag--region-remove (region-beginning) (region-end) nil options)
-    (go-tag--point-remove (point) nil options)))
+  (let ((stags (go-tag--parse-tag tags))
+        (options (go-tag--parse-option tags)))
+    (if (use-region-p)
+        (go-tag--region-remove (region-beginning) (region-end) stags options)
+      (go-tag--point-remove (point)  stags options))))
 
 (defun go-tag--region-remove (start end tags &optional options)
   "Remove field TAGS for the region between START and END."
@@ -142,11 +156,11 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
 (defun go-tag--remove(cmd-args tags &optional options)
   "Init CMD-ARGS, add TAGS and OPTIONS to CMD-ARGS."
   (progn
-    (when tags
+    (when (and tags (not (string-equal tags "")))
       (setq cmd-args
             (append cmd-args
                     (list "-remove-tags" tags))))
-    (when options
+    (when (and options (not (string-equal options "")))
       (setq cmd-args
             (append cmd-args
                     (list "-remove-options" options))))
