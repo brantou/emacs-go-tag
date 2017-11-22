@@ -3,6 +3,7 @@
   :ID:       433a1d5f-9353-496f-a783-8c123cc0a633
   :END:
   Edit field tags for golang struct fields, based on [[https://github.com/fatih/gomodifytags][gomodifytags]].
+  This package is inspired by ~GoAddTags~ of [[https://github.com/fatih/vim-go][vim-go]] and [[https://github.com/syohex/emacs-go-add-tags][go-add-tags]].
 
 * gomodifytags
   :PROPERTIES:
@@ -19,8 +20,68 @@
   :PROPERTIES:
   :ID:       dbee016c-6edd-4999-9303-419d35469ad2
   :END:
-  - ~go-tag-add~ Add tags
-  - ~go-tag-remove~ Remove tags
+  If you are familiar with ~GoAddTags~ of [[https://github.com/fatih/vim-go][vim-go]] , ~go-tag~ you will get started quickly.
+  - ~go-tag-add~
+    #+BEGIN_QUOTE
+    :[range]go-tag-add [key],[option] [key1],[option] ...
+    #+END_QUOTE
+
+    Adds field tags for the fields of a struct. If called inside a struct it
+    automatically add field tags with the `json` key and the value
+    automatically generated based on the field name. An error message is given
+    if it's called outside a struct definition or if the file is not correctly
+    formatted.
+
+    If [range] is given, only the selected fields will be changed.
+
+    The default `json` can be changed by providing one or more [key]
+    arguments. An example of adding `xml` and `db` would be:
+
+    #+BEGIN_QUOTE
+    :go-tag-add xml db
+    #+END_QUOTE
+
+    If [option] is passed it'll either add a new tag with an option or will
+    modify existing tags. An example of adding `omitempty` to all `json`
+    fields would be:
+    #+BEGIN_QUOTE
+    :go-tag-add json,omitempty
+    #+END_QUOTE
+
+    You can define a constant value instead of the default field based value.
+    For example the following command will add ``valid:"1"`` to all fields.
+    #+BEGIN_QUOTE
+    :go-tag-add valid=1
+    #+END_QUOTE
+
+    [[https:/github.com/brantou/emacs-go-tag/blob/master/img/go-tag-add.gif]]
+  - ~go-tag-remove~
+
+    #+BEGIN_QUOTE
+    :[range]go-tag-remove [key],[option] [key1],[option1] ...
+    #+END_QUOTE
+
+    Rmove field tags for the fields of a struct. If called inside a struct it
+    automatically remove all field tags. An error message is given if it's
+    called outside a struct definition or if the file is not correctly
+    formatted
+
+    If [range] is given, only the selected fields will be changed.
+
+    If [key] is given, it will only remove those keys. Example:
+
+    #+BEGIN_QUOTE
+    :go-tag-remove json
+    #+END_QUOTE
+
+    If [option] is passed with a [key], it will only remove the options.
+    Example, this will only remove `omitempty` options from fields containing
+    `json`:
+
+    #+BEGIN_QUOTE
+    :go-tag-remove json,omitempty
+    #+END_QUOTE
+    [[https:/github.com/brantou/emacs-go-tag/blob/master/img/go-tag-remove.gif]]
 
 * Configuration
   :PROPERTIES:
@@ -39,5 +100,5 @@
   #+BEGIN_SRC elisp :eval strip-export
     (with-eval-after-load 'go-mode
       (define-key go-mode-map (kbd "C-c t") #'go-tag-add)
-      (define-key go-mode-map (kbd "C-c T") #'go-tag-remove)
+      (define-key go-mode-map (kbd "C-c T") #'go-tag-remove))
   #+END_SRC

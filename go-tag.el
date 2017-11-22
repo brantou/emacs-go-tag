@@ -118,12 +118,11 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
 
 (defun go-tag--add (cmd-args tags &optional options)
   "Init CMD-ARGS, add TAGS and OPTIONS to CMD-ARGS."
-  (progn
-    (when (and tags (not (string-equal tags "")))
-      (setq cmd-args
-            (append cmd-args
-                    (list "-add-tags" tags))))
-    (when (and options (not (string-equal options "")))
+  (let ((tags (if (string-equal tags "") "json" tags)))
+    (setq cmd-args
+          (append cmd-args
+                  (list "-add-tags" tags)))
+    (unless (string-equal options "")
       (setq cmd-args
             (append cmd-args
                     (list "-add-options" options))))
@@ -156,15 +155,40 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
 (defun go-tag--remove(cmd-args tags &optional options)
   "Init CMD-ARGS, add TAGS and OPTIONS to CMD-ARGS."
   (progn
-    (when (and tags (not (string-equal tags "")))
-      (setq cmd-args
-            (append cmd-args
-                    (list "-remove-tags" tags))))
-    (when (and options (not (string-equal options "")))
-      (setq cmd-args
-            (append cmd-args
-                    (list "-remove-options" options))))
+    (if (string-equal tags "")
+        (setq cmd-args
+              (append cmd-args
+                      (list "-clear-tags")))
+      (if (string-equal options "")
+          (setq cmd-args
+                (append cmd-args
+                        (list "-remove-tags" tags)))
+        (let ((tags (go-tag--filter-tags tags options)))
+          (unless (string-equal tags "")
+            (setq cmd-args
+                  (append cmd-args
+                          (list "-remove-tags" tags))))
+          (setq cmd-args
+                (append cmd-args
+                        (list "-remove-options" options))))))
     (go-tag--proc cmd-args)))
+
+(defun go-tag--filter-tags (tags options)
+  (let ((tag-lst (split-string tags ","))
+        (option-alst (mapcar
+                      (lambda (opt)
+                        (let ((opt-pair (split-string opt "=")))
+                          (cons (car opt-pair) (cadr opt-pair))))
+                      (split-string options ","))))
+    (mapconcat
+     'identity
+     (delete "" (split-string
+                 (mapconcat
+                  (lambda (tag)
+                    (unless (assoc tag option-alst) tag))
+                  tag-lst
+                  ",") ","))
+     ",")))
 
 (defun go-tag--proc (cmd-args)
   "Modify field tags based on CMD-ARGS.
