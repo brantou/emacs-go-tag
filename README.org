@@ -54,7 +54,7 @@
     :go-tag-add valid=1
     #+END_QUOTE
 
-    [[https:/github.com/brantou/emacs-go-tag/blob/master/img/go-tag-add.gif]]
+    [[https://github.com/brantou/emacs-go-tag/blob/master/img/go-tag-add.gif]]
   - ~go-tag-remove~
 
     #+BEGIN_QUOTE
@@ -81,7 +81,7 @@
     #+BEGIN_QUOTE
     :go-tag-remove json,omitempty
     #+END_QUOTE
-    [[https:/github.com/brantou/emacs-go-tag/blob/master/img/go-tag-remove.gif]]
+    [[https://github.com/brantou/emacs-go-tag/blob/master/img/go-tag-remove.gif]]
 
 * Configuration
   :PROPERTIES:
