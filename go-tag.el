@@ -5,8 +5,8 @@
 ;; Author: Brantou <brantou89@gmail.com>
 ;; URL: https://github.com/brantou/emacs-go-tag
 ;; Keywords: tools
-;; Version: 0.0.1
-;; Package-Requires: ((emacs "24.0"))
+;; Version: 1.0.0
+;; Package-Requires: ((emacs "24.0")(go-mode "1.3.1"))
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
