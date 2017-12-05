@@ -25,7 +25,8 @@
 
 ;;; Commentary:
 ;;
-;; Modify field tags for struct. Based on https://github.com/fatih/gomodifytags
+;; Edit field tags for golang struct fields, based on gomodifytags. 
+;; This package is inspired by GoAddTags of vim-go and go-add-tags.
 ;;
 
 ;;; Requirements:
