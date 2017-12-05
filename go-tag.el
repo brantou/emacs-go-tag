@@ -1,4 +1,4 @@
-;;; go-tag.el --- Modify tags for struct fields -*- lexical-binding: t; -*-
+;;; go-tag.el --- Edit Golang struct field tag -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017 Brantou
 
