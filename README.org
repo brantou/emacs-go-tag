@@ -24,7 +24,7 @@
   :PROPERTIES:
   :ID:       dbee016c-6edd-4999-9303-419d35469ad2
   :END:
-  If you are familiar with ~GoAddTags~ of [[https://github.com/fatih/vim-go][vim-go]] , ~go-tag~ you will get started quickly.
+  If you are familiar with ~GoAddTags~ AND ~GoRemoveTags~ of [[https://github.com/fatih/vim-go][vim-go]] , ~go-tag~ you will get started quickly.
   - ~go-tag-add~
     #+BEGIN_QUOTE
     :[range]go-tag-add [key],[option] [key1],[option] ...
