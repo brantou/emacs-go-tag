@@ -1,5 +1,4 @@
-#+TITLE: emacs-go-tag
-[[https://melpa.org/#/go-tag][file:https://melpa.org/packages/go-tag-badge.svg]]
+#+TITLE: emacs-go-tag [[https://melpa.org/#/go-tag][file:https://melpa.org/packages/go-tag-badge.svg]]
 
 * Introduction
   :PROPERTIES:
