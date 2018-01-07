@@ -21,6 +21,34 @@
     go get github.com/fatih/gomodifytags
   #+END_SRC
 
+* Installation
+  :PROPERTIES:
+  :ID:       edb6d6eb-9d05-418c-81d9-7452b9db3d69
+  :END:
+
+Available on all major ~package.el~ community maintained repos -
+[[https://stable.melpa.org/#/][MELPA Stable]] and [[https://melpa.org/#/][MELPA]] repos.
+
+MELPA Stable is recommended as it has the latest stable version.
+MELPA has a development snapshot for users who don't mind breakage but
+don't want to run from a git checkout.
+
+You can install ~go-tag~ using the following command:
+
+~M-x package-install [RET] go-tag [RET]~
+
+or if you'd rather keep it in your dotfiles:
+
+#+BEGIN_SRC elisp
+  (unless (package-installed-p 'go-tag)
+    (package-refresh-contents)
+    (package-install 'go-tag))
+#+END_SRC
+
+If the installation doesn't work try refreshing the package list:
+
+~M-x package-refresh-contents~
+
 * Commands
   :PROPERTIES:
   :ID:       dbee016c-6edd-4999-9303-419d35469ad2
