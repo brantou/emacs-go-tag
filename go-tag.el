@@ -100,6 +100,7 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
   (interactive "sTags: ")
   (let ((stags (go-tag--parse-tag tags))
         (options (go-tag--parse-option tags)))
+    (when (string-equal stags "") (setq stags "json"))
     (if (use-region-p)
         (progn
           (go-tag--region-remove (region-beginning) (region-end) stags "")
