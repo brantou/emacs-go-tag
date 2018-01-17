@@ -46,18 +46,22 @@
 
 (defgroup go-tag nil
   "Modify field tag for struct fields."
+  :prefix "go-tag-"
+  :link '(url-link :tag "MELPA" "https://melpa.org/#/go-tag")
+  :link '(url-link :tag "MELPA Stable" "https://stable.melpa.org/#/go-tag")
+  :link '(url-link :tag "GitHub" "https://github.com/brantou/emacs-go-tag")
   :group 'go)
 
 (defcustom go-tag-command "gomodifytags"
   "The 'gomodifytags' command.
 from https://github.com/fatih/gomodifytags."
   :type 'string
-  :group 'go)
+  :group 'go-tag)
 
 (defcustom go-tag-args nil
   "Additional arguments to pass to go-tag."
   :type '(repeat string)
-  :group 'go)
+  :group 'go-tag)
 
 (defcustom go-tag-show-errors 'buffer
   "Where to display go-tag error output.
@@ -66,7 +70,7 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
           (const :tag "Own buffer" buffer)
           (const :tag "Echo area" echo)
           (const :tag "None" nil))
-  :group 'go)
+  :group 'go-tag)
 
 (defun go-tag--parse-tag (tags)
   (mapconcat
