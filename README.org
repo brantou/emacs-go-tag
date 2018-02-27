@@ -117,6 +117,17 @@ If the installation doesn't work try refreshing the package list:
     #+END_QUOTE
     [[https://github.com/brantou/emacs-go-tag/blob/master/img/go-tag-remove.gif]]
 
+  - ~go-tag-refresh~ (Useful when designing structures)
+    #+BEGIN_QUOTE
+    :[range]go-tag-refresh [key],[option] [key1],[option] ...
+    #+END_QUOTE
+
+    Equal to:
+    #+BEGIN_QUOTE
+    :[range]go-tag-remove [key] [key1] ...
+    :[range]go-tag-add [key],[option] [key1],[option] ...
+    #+END_QUOTE
+
 * Configuration
   :PROPERTIES:
   :ID:       9f364afb-69ae-47dc-ae2e-d76bdcefc928

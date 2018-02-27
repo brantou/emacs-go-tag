@@ -5,7 +5,7 @@
 ;; Author: Brantou <brantou89@gmail.com>
 ;; URL: https://github.com/brantou/emacs-go-tag
 ;; Keywords: tools
-;; Version: 1.0.2
+;; Version: 1.1.0
 ;; Package-Requires: ((emacs "24.0")(go-mode "1.5.0"))
 
 ;; This program is free software: you can redistribute it and/or modify
@@ -97,6 +97,12 @@ It can either be displayed in its own buffer, in the echo area, or not at all."
                 ",")
                ","))
              ","))
+
+;;;###autoload
+(defun go-tag-open-github()
+  "go-tag open Github page."
+  (interactive)
+  (browse-url "https://github.com/brantou/emacs-go-tag"))
 
 ;;;###autoload
 (defun go-tag-refresh (tags)
