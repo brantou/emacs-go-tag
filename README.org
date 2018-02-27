@@ -125,6 +125,7 @@ If the installation doesn't work try refreshing the package list:
     Equal to:
     #+BEGIN_QUOTE
     :[range]go-tag-remove [key] [key1] ...
+    
     :[range]go-tag-add [key],[option] [key1],[option] ...
     #+END_QUOTE
 
