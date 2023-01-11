@@ -19,7 +19,7 @@
   ~gomodifytags~ makes it easy to update, add or delete the tags in a struct field.
   It can be installed with
   #+BEGIN_SRC shell :eval strip-export
-    go get github.com/fatih/gomodifytags
+    go install github.com/fatih/gomodifytags@latest
   #+END_SRC
 
 * Installation
